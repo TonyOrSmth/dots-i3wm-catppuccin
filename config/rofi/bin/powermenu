@@ -1,0 +1,10 @@
+#!/bin/env bash
+exec rofi \
+    -show p \
+    -modi p:'/home/tone/.local/share/bin/rofi-power-menu --symbols-font "Symbols Nerd Font"' \
+    -location 3 \
+    -yoffset 90 \
+    -xoffset -32 \
+    -theme-str 'window {width: 8em; lenght: 3em;} listview {lines: 6;}' \
+    -normal-window \
+    -no-sidebar-mode

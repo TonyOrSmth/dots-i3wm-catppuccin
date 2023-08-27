@@ -1,0 +1,31 @@
+import: [ "~/.config/alacritty/catppuccin/catppuccin-mocha.yml" ]
+
+window:
+    dimensions:
+        columns: 64
+        lines: 16
+    padding:
+        x: 16
+        y: 16
+cursor:
+    style:
+        shape: Beam
+        blinking: Never
+    hide_when_typing: true
+    unfocused_hollow: false
+    thickness: 0.15
+
+mouse:
+    hide_when_typing: true
+
+font:
+    normal:
+        family: JetBrainsMono Nerd Font
+        style: Medium
+    bold:
+        family: JetBrainsMono Nerd Font
+        style: Bold
+    size: 7
+env:
+    TERM: xterm-256color
+    COLORTERM: truecolor

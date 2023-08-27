@@ -1,0 +1,20 @@
+configuration{
+    modi: "run,drun,window";
+    show-icons: false;
+    terminal: "alacritty";
+    location: 0;
+    disable-history: true;
+    hide-scrollbar: true;
+    display-drun: "   Apps ";
+    display-run: "   Run ";
+    display-window: "   Window";
+    display-Network: " 󰤨  Network";
+    display-clipboard: "  Clipboard";
+    sidebar-mode: true;
+}
+
+@theme "catppuccin-mocha"
+
+* {
+    font: "JetBrainsMono 12";
+}

@@ -1,0 +1,201 @@
+# i3 config file (v4)
+
+font pango:JetBrainsMono 14
+
+# -- Variables --
+
+# set mod to win key
+set $mod Mod4
+
+# set path to wallpaper
+set $wallpaper /home/tone/Desktop/background.png
+
+# use catppuccin palette
+set $rosewater #f5e0dc
+set $flamingo  #f2cdcd
+set $pink      #f5c2e7
+set $mauve     #cba6f7
+set $red       #f38ba8
+set $maroon    #eba0ac
+set $peach     #fab387
+set $green     #a6e3a1
+set $teal      #94e2d5
+set $sky       #89dceb
+set $sapphire  #74c7ec
+set $blue      #89b4fa
+set $lavender  #b4befe
+set $text      #cdd6f4
+set $subtext1  #bac2de
+set $subtext0  #a6adc8
+set $overlay2  #9399b2
+set $overlay1  #7f849c
+set $overlay0  #6c7086
+set $surface2  #585b70
+set $surface1  #45475a
+set $surface0  #313244
+set $base      #1e1e2e
+set $mantle    #181825
+set $crust     #11111b
+
+# target                 title     bg    text   indicator  border
+client.focused           $surface0 $base $text  $surface0  $surface0
+client.focused_inactive  $surface1 $base $text  $surface1  $surface1
+client.unfocused         $surface1 $base $text  $surface1  $surface1
+client.urgent            $peach    $base $peach $overlay0  $peach
+client.placeholder       $overlay0 $base $text  $overlay0  $overlay0
+client.background        $base
+
+# use pactl to adjust volume in pulseaudio
+set $refresh_i3status killall -SIGUSR1 i3status
+
+# define names for default workspaces for which we configure key bindings later on.
+# we use variables to avoid repeating the names in multiple places.
+set $ws0 "1"
+set $ws1 "2"
+set $ws2 "3"
+set $ws3 "4"
+
+for_window [class="Rofi" instance="rofi"] floating enable
+
+# -- Exec --
+
+# start XDG autostart .desktop files using dex. see also
+# https://wiki.archlinux.org/index.php/XDG_Autostart
+exec --no-startup-id dex --autostart --environment i3
+
+# The combination of xss-lock, nm-applet and pactl is a popular choice, so
+# they are included here as an example. Modify as you see fit.
+
+# exec --no-startup-id nm-applet
+
+exec --no-startup-id greenclip daemon
+exec --no-startup-id xsettingsd
+exec --no-startup-id udiskie --no-notify
+exec --no-startup-id brightnessctl set 100%+ 
+exec --no-startup-id feh --bg-scale $wallpaper
+exec --no-startup-id xss-lock --transfer-sleep-lock -- sh /home/tone/.local/share/bin/lock.sh
+exec --no-startup-id systemd-inhibit --what=handle-power-key sleep infinity
+exec_always --no-startup-id ~/.config/polybar/launch.sh
+exec_always --no-startup-id picom 
+exec_always --no-startup-id ~/.fehbg 
+
+# -- Bindings --
+
+# change vol
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+
+# change brightness
+bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 10%-
+bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set 10%+
+
+floating_modifier $mod
+tiling_drag modifier titlebar
+
+# start a terminal
+bindsym $mod+Return exec alacritty
+
+# kill focused window
+bindsym $mod+q kill
+
+# rofi bindings
+bindsym Control+space exec rofi -show drun -normal-window
+bindsym $mod+Control+r exec rofi -show run -normal-window
+bindsym Mod1+Tab exec rofi -show window -normal-window
+bindsym $mod+v exec ~/.config/rofi/bin/clipboard
+bindsym XF86PowerOff exec ~/.config/rofi/bin/powermenu
+
+# screenshot bindings
+bindsym Print exec          xfce4-screenshooter -f -s ~/Pictures
+bindsym Shift+Print exec    xfce4-screenshooter -rc
+
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# split in horizontal orientation
+bindsym $mod+Shift+h split h
+
+# split in vertical orientation
+bindsym $mod+Shift+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout toggle all
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+# focus the child container
+#bindsym $mod+d focus child
+
+
+# switch to workspace
+bindsym $mod+1 workspace number $ws0
+bindsym $mod+2 workspace number $ws1
+bindsym $mod+3 workspace number $ws2
+bindsym $mod+4 workspace number $ws3
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace number $ws0
+bindsym $mod+Shift+2 move container to workspace number $ws1
+bindsym $mod+Shift+3 move container to workspace number $ws2
+bindsym $mod+Shift+4 move container to workspace number $ws3
+
+# reload the configuration file
+bindsym $mod+Shift+c reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+
+# exit i3 (logs you out of your X session)
+
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+
+
+        # same bindings, but for the arrow keys
+        bindsym Left resize shrink width 50 px or 50 ppt
+        bindsym Down resize grow height 50 px or 50 ppt
+        bindsym Up resize shrink height 50 px or 50 ppt
+        bindsym Right resize grow width 50 px or 50 ppt
+
+        # back to normal: Enter or Escape or $mod+r
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+r mode "default"
+}
+bindsym $mod+r mode "resize"
+
+# bar {
+    # position top
+    # status_command /usr/bin/bumblebee-status \
+        # -m battery nic datetime \
+        # -t powerline
+# }
+
+# -- Border --
+
+default_border pixel 0
+gaps inner 16
+gaps outer 16
+gaps top 74

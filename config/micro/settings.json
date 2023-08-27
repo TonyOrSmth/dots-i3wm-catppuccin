@@ -1,0 +1,12 @@
+{
+    "autosu": true,
+    "clipboard": "terminal",
+    "colorscheme": "catppuccin-mocha",
+    "indentchar": "·",
+    "mkparents": true,
+    "softwrap": true,
+    "statusformatl": "  󰈔 $(filename)$(modified) ",
+    "statusformatr": " $(line):$(col) 󰌽 $(opt:encoding)  ",
+    "tabstospaces": true,
+    "wordwrap": true
+}

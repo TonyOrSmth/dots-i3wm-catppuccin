@@ -1,0 +1,8 @@
+#!/bin/env bash
+rofi \
+    -modi "clipboard:greenclip print" \
+    -show clipboard -no-sidebar-mode -run-command '{cmd}' \
+    -location 6 \
+    -yoffset -64 \
+    -theme-str 'window {width: 13em;} listview {lines: 6; columns: 1;}' \
+    -normal-window
